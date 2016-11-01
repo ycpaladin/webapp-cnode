@@ -26,13 +26,13 @@ a{
 }
 
 #container{
-        background-color: red; 
+        background-color: #fff;
         height: 100%;
 
         header{
-                height: 35px;
-                line-height: 35px;
-                background: #ccc;
+                height: 45px;
+                line-height: 45px;
+                background: #f6f6f6;
 
                 header{
                         text-align: center;
@@ -42,13 +42,28 @@ a{
                 }
                 span#toolBtn{
                         padding-right: 5px;
-                }                
+                }     
+
+                ul{
+                        width: 100%;
+                        li{
+                                text-align: center;
+                                a{
+                                        color: #80bd01;
+                                        display: block;
+                                }
+                                &.currentTab{
+                                        background-color: #80bd01;
+                                        a{
+                                                color: #fff;
+                                        }
+                                }
+                        }
+                }           
         }
        >div{
                 height: 100%;
                 .contentWarpper{
-
-                        background:  yellow;
                         overflow-y: scroll;
                         -webkit-overflow-scrolling : touch;
                         ul{
@@ -56,19 +71,43 @@ a{
                                         height: 60px;
                                         padding: 0px 5px;
                                         line-height: 60px;
+                                        border-bottom: 1px solid #f0f0f0;
                                 }
+                        }
+                        .fetching{
+                                margin: 20px auto 20px auto;
+                                position: relative;
+                                -webkit-animation: rotate-forever 1s infinite linear;
+                                animation: rotate-forever 1s infinite linear;
+                                height: 30px;
+                                width: 30px;
+                                border: 4px solid #80bd01;
+                                border-right-color: transparent;
+                                border-radius: 50%;
                         }
                 }         
         }
         footer{
-                height: 45px;
-                line-height: 45px;
-                background:  green;
+                height: 55px;
+                line-height: 55px;
+                background:  #80bd01;
                 ul{
                         li{
                                 text-align: center;
-                                
+                                a{
+                                        display: block;
+                                }
                         }
                 }
         }
+}
+
+
+@keyframes rotate-forever {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
 }

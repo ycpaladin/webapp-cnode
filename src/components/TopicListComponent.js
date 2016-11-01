@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { HeaderComponent, FooterComponent } from './common/CommComponents';
+import { TopicListHeaderComponent, FooterComponent } from './common/CommComponents';
 import { getTopics } from '../actions/topicActions';
 import { TopicItemComponent } from './common/CommComponents'
 class TopicListComponent extends Component {
@@ -19,16 +19,27 @@ class TopicListComponent extends Component {
 
     render() {
 
-        let items = this.props.list.map((item, index) => {
-            return <TopicItemComponent key={index} {...item} />
-        });
+        let children;
+        if (this.props.isFetching) {
+            children = (<div className="fetching"></div>);
+        } else {
+            let items = this.props.list.map((item, index) => {
+                return <TopicItemComponent key={index} {...item} />
+            });
+
+            children = (
+                <ul data-flex="dir:top main:justify">
+                    {items}
+                </ul>
+            );
+        }
+
+
         return (
             <div data-flex="dir:top main:justify">
-                <HeaderComponent />
+                <TopicListHeaderComponent {...this.props}/>
                 <div data-flex-box="1" className="contentWarpper">
-                    <ul data-flex="dir:top main:justify">
-                        {items}
-                    </ul>
+                    {children}
                 </div>
             </div>
         )
