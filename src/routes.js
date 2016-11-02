@@ -9,9 +9,9 @@ export default class Routers extends Component {
     constructor(props) {
         super(props);
 
-        // this.topicListOnEnter = () => {
-
-        // }
+        this.topicListOnEnter = (e) => {
+            console.log('===================>',e);
+        }
 
         this.topicListOnLeave = () => {
             window.localStorage["topicListScrollHeight"] = document.getElementsByClassName('contentWarpper')[0].scrollTop;
@@ -22,8 +22,8 @@ export default class Routers extends Component {
         return (
             <Router history={this.props.history}>
                 <Route path="/" component={Layout}>
-                    <IndexRoute component={TopicListComponent}  onLeave={this.topicListOnLeave} />
-                    <Route path='topic/:id' component={TopicComponent} />
+                    <IndexRoute component={TopicListComponent}  onLeave={this.topicListOnLeave} onEnter={e=> this.topicListOnEnter(e)} />
+                    <Route path='topic/:tab/:id' component={TopicComponent} />
                 </Route>
             </Router>
         )

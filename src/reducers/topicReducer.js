@@ -4,7 +4,7 @@ let { GET_TOPIC_BYID_FETCHING, GET_TOPIC_BYID_COMPLETED } = actionTypes;
 
 const defaultState = {
     isFetching: false,
-    topic: null
+    topic: {}
 
 }
 

@@ -3,8 +3,11 @@ import React, { Component } from 'react';
 import { getTopics } from '../../actions/topicActions';
 import moment from 'moment';
 import {Link} from 'react-router';
-// import {moment} from '../../../node_modules/moment/locale/zh-cn';
-export class HeaderComponent extends Component {
+import { getTabs, getTabName } from '../../helpers/tabHelper';
+/**
+ * 文章详情页面的头部
+ */
+export class TopicHeaderComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -12,18 +15,22 @@ export class HeaderComponent extends Component {
 
 
     render() {
-
+        let { tab, title} = this.props;
+        let tabName = getTabName(tab);
+        
         return (
             <header data-flex="dir:left; " data-flex-box="0">
-                <span id="backBtn"><a href="javascript:;">返回</a></span>
-                <header data-flex-box="1">标题</header>
+                <span id="backBtn"><a href="javascript:;">{tabName}</a></span>
+                <h2 data-flex-box="1">{ title}</h2>
                 <span id="toolBtn"><a href="javascript:;">...</a></span>
             </header>
         );
     }
 }
 
-
+/**
+ * 文章列表的头部
+ */
 export class TopicListHeaderComponent extends Component {
 
     constructor(props) {
@@ -32,26 +39,28 @@ export class TopicListHeaderComponent extends Component {
             if (tab !== this.props.tab) {
                 let {dispatch} = this.props;
                 dispatch(getTopics(1, tab));
-                // window.scroll.
-                document.getElementsByTagName('body')[0].scrollTop = 0;
+                // document.getElementsByTagName('body')[0].scrollTop = 0; //
             }
         }
     }
 
-
+    /**
+     * 判断组件是否需要重新加载，以提升性能
+     */
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.tab !== nextProps.tab;//防止重复render
     }
 
     render() {
+
+        let tabs = getTabs();
+        let children = tabs.map(({ key, name}, index) => {
+            return (<li key={index } className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{ name}</a></li>);
+        })
         return (
             <header data-flex="dir:left; " data-flex-box="0">
                 <ul data-flex="dir:left box:mean">
-                    <li className={this.props.tab == 'all' ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick('all')} >全部</a></li>
-                    <li className={this.props.tab == 'good' ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick('good')} >精华</a></li>
-                    <li className={this.props.tab == 'share' ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick('share')} >分享</a></li>
-                    <li className={this.props.tab == 'ask' ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick('ask')}>问答</a></li>
-                    <li className={this.props.tab == 'job' ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick('job')}>招聘</a></li>
+                    {children}
                 </ul>
 
             </header>
@@ -59,7 +68,9 @@ export class TopicListHeaderComponent extends Component {
     }
 }
 
-
+/**
+ * 公共的脚部分
+ */
 export class FooterComponent extends Component {
     constructor(props) {
         super(props);
@@ -80,7 +91,9 @@ export class FooterComponent extends Component {
 
 }
 
-
+/**
+ * 文章列表项组件
+ */
 export class TopicItemComponent extends Component {
 
     constructor(props) {
@@ -107,13 +120,13 @@ export class TopicItemComponent extends Component {
         let { id, top, tab, good, title, currentTab, visit_count, reply_count, last_reply_at, author: { loginname, avatar_url}} = this.props;
         let tabElement;
         if (currentTab == 'all' || top || good) {
-            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName()}</span>;
+            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName() }</span>;
         }
         return (
             <li>
                 <UserPictureComponent avatar_url={avatar_url} />
                 {tabElement}
-                <Link title={title} to={ `/topic/${id}`}> {title}</Link>
+                <Link title={title} to={ `/topic/${tab}/${id}`}> {title}</Link>
                 <span className="count">
                     <span>{reply_count}</span><span>/</span><span>{visit_count}</span>
                 </span>
@@ -123,6 +136,10 @@ export class TopicItemComponent extends Component {
     }
 }
 
+
+/**
+ * 回复时间组件
+ */
 export class ReplyTimeComponent extends Component {
 
     constructor(props) {
@@ -139,11 +156,13 @@ export class ReplyTimeComponent extends Component {
     }
 
     render() {
-        return (<span className="time">{this.getReplyDateAsString()}</span>);
+        return (<span className="time">{this.getReplyDateAsString() }</span>);
     }
 }
 
-
+/**
+ * 用户头像组件
+ */
 export class UserPictureComponent extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -158,6 +177,9 @@ export class UserPictureComponent extends Component {
     }
 }
 
+/**
+ * 正在加载组件
+ */
 export class LoadingComponent extends Component {
     render() {
         return (<div className="fetching"></div>)

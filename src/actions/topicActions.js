@@ -4,7 +4,15 @@ import fetch from 'isomorphic-fetch';
 const apiUrlBase = 'https://cnodejs.org/api/v1';
 
 import { actionTypes } from '../constants/actionTypes';
-let {    GET_TOPIC_LISTS_COMPLETED, GET_TOPIC_LISTS_FIRST_COMPLETED, GET_TOPIC_LISTS_FETCHING,GO_BACK_TOPIC_LIST } = actionTypes;
+let {
+    GET_TOPIC_LISTS_COMPLETED,
+    GET_TOPIC_LISTS_FIRST_COMPLETED,
+    GET_TOPIC_LISTS_FETCHING,
+    GO_BACK_TOPIC_LIST,
+
+    GET_TOPIC_BYID_FETCHING,
+    GET_TOPIC_BYID_COMPLETED
+} = actionTypes;
 
 export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
     return dispatch => {
@@ -36,19 +44,22 @@ export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
     }
 }
 
-export function goBackTopicList(){
+export function goBackTopicList() {
     return dispatch => {
-        dispatch({type:GO_BACK_TOPIC_LIST })
+        dispatch({ type: GO_BACK_TOPIC_LIST })
     }
 }
 
 
 export function getTopicById(topicId) {
     return dispatch => {
+        dispatch({
+            type: GET_TOPIC_BYID_FETCHING
+        })
         let apiUrl = `${apiUrlBase}/topic/${topicId}`;
         fetch(apiUrl).then(r => r.json()).then(({success, data}) => {
             dispatch({
-                type: '',
+                type: GET_TOPIC_BYID_COMPLETED,
                 result: data
             })
         });
