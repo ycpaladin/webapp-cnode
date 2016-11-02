@@ -2,24 +2,13 @@ import keyMirror from 'fbjs/lib/keyMirror';
 
 
 export const actionTypes = keyMirror({
-    USER_LIST: null,
-    USER_LIST_FETCHING: null,
+    GET_TOPIC_LISTS_FETCHING: null,//正在加载，（网络请求）
+    GET_TOPIC_LISTS_FIRST_COMPLETED: null,//加载列表的首页完毕
+    GET_TOPIC_LISTS_COMPLETED: null,//加载列表的其他页完毕
+    GO_BACK_TOPIC_LIST:null,
 
-    USER_ADD: null,
-    USER_ADD_FETCHING: null,
-
-    USER_EDIT: null,
-    USER_EDIT_FETCHING: null,
-
-    USER_GET: null,
-    USER_GET_FETCHING: null,
-
-    USER_DELETE_FETCHING: null,
-    USER_DELETE: null,
-
-    GET_TOPIC_LISTS_FETCHING: null,
-    GET_TOPIC_LISTS_FIRST: null,
-    GET_TOPIC_LISTS: null
+    GET_TOPIC_BYID_FETCHING: null,//正在根据ID加载，（网络请求）
+    GET_TOPIC_BYID_COMPLETED: null//根据ID加载topic完毕
 
 });
 

@@ -1,51 +1,24 @@
 import { actionTypes } from '../constants/actionTypes';
-let { GET_TOPIC_LISTS, GET_TOPIC_LISTS_FIRST, GET_TOPIC_LISTS_FETCHING } = actionTypes;
+import { List } from 'immutable';
+let { GET_TOPIC_BYID_FETCHING, GET_TOPIC_BYID_COMPLETED } = actionTypes;
 
 const defaultState = {
     isFetching: false,
-    tab: 'all',
-    page: 1,
-    limit: 10,
-    list: []
+    topic: null
 
 }
 
-// function getState({ tab, page, limit, data}) {
-//     return {
-//         tab, page, limit, data
-//     }
-// }
-
-export default function articleReducer(state = defaultState, action) {
-    let { type, result} = action;
+export default function topicReducer(state = defaultState, { type, result}) {
     switch (type) {
-
-        case GET_TOPIC_LISTS_FETCHING:
+        case GET_TOPIC_BYID_FETCHING:
             return Object.assign({}, state, {
-                tab: result.tab,
-                page: result.page,
-                limit: result.limit,
                 isFetching: true
             });
-        case GET_TOPIC_LISTS_FIRST:
-
+        case GET_TOPIC_BYID_COMPLETED:
             return Object.assign({}, state, {
-                tab: result.tab,
-                page: result.page,
-                limit: result.limit,
-                list: result.data,
-                isFetching: false
+                isFetching: false,
+                topic: result
             });
-        case GET_TOPIC_LISTS:
-            return Object.assign({}, state, {
-                tab: result.tab,
-                page: result.page,
-                limit: result.limit,
-                list: state.list.push(...result.data),
-                isFetching: false
-            });
-
-        default:
-            return state;
+        default: return state;
     }
 }
