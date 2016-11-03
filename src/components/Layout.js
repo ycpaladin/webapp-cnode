@@ -14,7 +14,7 @@ export default class Layout extends Component {
                 <div data-flex-box="1" data-flex="dir:top main:justify">
                     {this.props.children}
                 </div>
-                <FooterComponent />
+               
             </div>
         );
     }

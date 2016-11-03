@@ -28,8 +28,8 @@ export class TopicHeaderComponent extends Component {
         return (
             <header data-flex="dir:left; " data-flex-box="0" className="topicHeader">
 
-                <a href="javascript:;" onClick={e => this.goBacktoTopicList(e)} className="backBtn">
-                    <i className="icon iconfont">&#xe697;</i>
+                <a href="javascript:;" onClick={e => this.goBacktoTopicList(e) } className="backBtn">
+                    <i className="icon iconfont">&#xe697; </i>
                     <span> {tabName}</span>
                 </a>
             </header>
@@ -64,7 +64,7 @@ export class TopicListHeaderComponent extends Component {
 
         let tabs = getTabs();
         let children = tabs.map(({ key, name}, index) => {
-            return (<li key={index} className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key)} >{name}</a></li>);
+            return (<li key={index} className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{name}</a></li>);
         })
         return (
             <header data-flex="dir:left; " data-flex-box="0">
@@ -129,7 +129,7 @@ export class TopicItemComponent extends Component {
         let { id, top, tab, good, title, currentTab, visit_count, reply_count, last_reply_at, author} = this.props;
         let tabElement;
         if (currentTab == 'all' || top || good) {
-            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName()}</span>;
+            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName() }</span>;
         }
         return (
             <li>
@@ -165,7 +165,7 @@ export class ReplyTimeComponent extends Component {
     }
 
     render() {
-        return (<span className="time">{this.getReplyDateAsString()}</span>);
+        return (<span className="time">{this.getReplyDateAsString() }</span>);
     }
 }
 
@@ -194,5 +194,47 @@ export class UserPictureComponent extends Component {
 export class LoadingComponent extends Component {
     render() {
         return (<div className="fetching"></div>)
+    }
+}
+
+
+export class ReplyListComponent extends Component {
+
+    constructor(props) {
+        super(props);
+
+
+    }
+
+    render() {
+        let { replies } = this.props;
+
+        let children = replies.map((item, index) => {
+
+            return (<ReplyItemComponent key={index}  {...item} />);
+        })
+        return (
+            <div  className="replyList">
+                <div>{replies.length}个回复</div>
+                <ul>
+
+                    {children}
+                </ul>
+            </div>
+        );
+    }
+}
+
+
+export class ReplyItemComponent extends Component {
+
+    render() {
+        let { author} = this.props;
+        return (
+            <li>
+                <UserPictureComponent user={author} />
+            </li>
+        );
+
     }
 }

@@ -53,11 +53,12 @@ class TopicListComponent extends Component {
 
 
         return (
-            <div data-flex="dir:top main:justify">
+            <div data-flex="dir:top main:justify" data-flex-box="1">
                 <TopicListHeaderComponent {...this.props} />
                 <div data-flex-box="1" className="contentWarpper" onScroll={e => this.handScroll(e) }>
                     {children}
                 </div>
+                 <FooterComponent />
             </div>
         );
     }
