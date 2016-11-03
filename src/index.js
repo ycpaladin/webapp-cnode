@@ -1,17 +1,8 @@
+import './assets/iconfont/demo.css';
 import '../node_modules/flex.css/dist/data-flex.css';
 
 import './assets/second.scss';
 
-
-// import { Test } from './actions/userActions';
-
-
-// let func = (data) => {
-//     console.log(data);
-// }
-// let dispatch = Test();
-
-// dispatch(func);
 
 import React from 'react';
 import {render} from 'react-dom';

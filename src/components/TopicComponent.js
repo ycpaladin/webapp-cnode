@@ -2,21 +2,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTopicById, goBackTopicList } from '../actions/topicActions';
-import {Link} from 'react-router';
-import {getHistory} from '../configureStore';
-import {TopicHeaderComponent} from './common/CommComponents';
+import { Link } from 'react-router';
+import { fromNow } from '../helpers/dateTimeHelper';
+
+import { TopicHeaderComponent, UserPictureComponent } from './common/CommComponents';
 
 class TopicComponent extends Component {
     constructor(props) {
         super(props);
 
-        this.goBacktoTopicList = e => {
-            let { dispatch} = this.props;
-            dispatch(goBackTopicList());
-            let history = getHistory();
-            history.goBack();
-            // let history
-        }
+
     }
 
     componentWillMount() {
@@ -26,21 +21,30 @@ class TopicComponent extends Component {
     }
 
     render() {
-        let {routeParams: { tab}, isFetching, topic: {title}} = this.props;
+        let {routeParams: { tab}, isFetching, topic} = this.props;
         let children;
         if (isFetching) {
             children = (<div className="fetching"></div>);
+        } else if (topic !== null) {
+            let {title, author, create_at, visit_count} = topic;
+            children = (<div className="topicContent">
+                <div className="header">
+                    <h1>{title}</h1>
+                    <UserPictureComponent user={author} />
+                    <a href="javascript:;">{author.loginname}</a>
+                    <span className="createAt">发布于{fromNow(create_at)}，</span>
+                    <span className="visitCount">{visit_count}次浏览</span>
+                    <i className="icon iconfont">&#xe6a0;</i>
+                </div>
+            </div>);
         }
         return (<div data-flex="dir:top main:justify">
-            <TopicHeaderComponent title={title} tab={tab}/>
+            <TopicHeaderComponent tab={tab} {...this.props} />
             <div data-flex-box="1" className="contentWarpper" >
                 {children}
             </div>
         </div>);
 
-
-        // <a href="javascript:;" onClick={e => this.goBacktoTopicList(e)}>goBack</a>
-        // return <Link to="/" >goBack</Link>
     }
 }
 

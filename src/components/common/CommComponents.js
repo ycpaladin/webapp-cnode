@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react';
-import { getTopics } from '../../actions/topicActions';
-import moment from 'moment';
-import {Link} from 'react-router';
+import { getTopics, goBackTopicList } from '../../actions/topicActions';
+import { Link } from 'react-router';
 import { getTabs, getTabName } from '../../helpers/tabHelper';
+import { getHistory } from '../../configureStore';
+import { fromNow } from '../../helpers/dateTimeHelper';
 /**
  * 文章详情页面的头部
  */
@@ -11,18 +12,26 @@ export class TopicHeaderComponent extends Component {
 
     constructor(props) {
         super(props);
+        this.goBacktoTopicList = e => {
+            let { dispatch} = this.props;
+            dispatch(goBackTopicList());
+            let history = getHistory();
+            history.goBack();
+        }
     }
 
 
     render() {
-        let { tab, title} = this.props;
+        let { tab} = this.props;
         let tabName = getTabName(tab);
-        
+
         return (
-            <header data-flex="dir:left; " data-flex-box="0">
-                <span id="backBtn"><a href="javascript:;">{tabName}</a></span>
-                <h2 data-flex-box="1">{ title}</h2>
-                <span id="toolBtn"><a href="javascript:;">...</a></span>
+            <header data-flex="dir:left; " data-flex-box="0" className="topicHeader">
+
+                <a href="javascript:;" onClick={e => this.goBacktoTopicList(e)} className="backBtn">
+                    <i className="icon iconfont">&#xe697;</i>
+                    <span> {tabName}</span>
+                </a>
             </header>
         );
     }
@@ -55,7 +64,7 @@ export class TopicListHeaderComponent extends Component {
 
         let tabs = getTabs();
         let children = tabs.map(({ key, name}, index) => {
-            return (<li key={index } className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{ name}</a></li>);
+            return (<li key={index} className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key)} >{name}</a></li>);
         })
         return (
             <header data-flex="dir:left; " data-flex-box="0">
@@ -117,16 +126,16 @@ export class TopicItemComponent extends Component {
     }
 
     render() {
-        let { id, top, tab, good, title, currentTab, visit_count, reply_count, last_reply_at, author: { loginname, avatar_url}} = this.props;
+        let { id, top, tab, good, title, currentTab, visit_count, reply_count, last_reply_at, author} = this.props;
         let tabElement;
         if (currentTab == 'all' || top || good) {
-            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName() }</span>;
+            tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName()}</span>;
         }
         return (
             <li>
-                <UserPictureComponent avatar_url={avatar_url} />
+                <UserPictureComponent user={author} />
                 {tabElement}
-                <Link title={title} to={ `/topic/${tab}/${id}`}> {title}</Link>
+                <Link title={title} to={`/topic/${tab}/${id}`}> {title}</Link>
                 <span className="count">
                     <span>{reply_count}</span><span>/</span><span>{visit_count}</span>
                 </span>
@@ -147,7 +156,7 @@ export class ReplyTimeComponent extends Component {
         super(props);
         this.getReplyDateAsString = () => {
             let { replyTime} = this.props;
-            return moment(replyTime).locale('zh-cn').fromNow();
+            return fromNow(replyTime);
         }
     }
 
@@ -156,7 +165,7 @@ export class ReplyTimeComponent extends Component {
     }
 
     render() {
-        return (<span className="time">{this.getReplyDateAsString() }</span>);
+        return (<span className="time">{this.getReplyDateAsString()}</span>);
     }
 }
 
@@ -170,10 +179,12 @@ export class UserPictureComponent extends Component {
     }
 
     render() {
-        let {avatar_url} = this.props;
+        let {avatar_url, loginname} = this.props.user;
         return (
-            <div style={{ backgroundImage: `url(${avatar_url})` }}></div>
-        )
+            <a href="javascript:;" className="userLink">
+                <div style={{ backgroundImage: `url(${avatar_url})` }} ></div>
+            </a>
+        );
     }
 }
 
