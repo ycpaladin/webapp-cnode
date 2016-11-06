@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { getTopics, goBackTopicList } from '../../actions/topicActions';
 import { Link } from 'react-router';
 import { getTabs, getTabName } from '../../helpers/tabHelper';
-import { getHistory } from '../../configureStore';
+
 import { fromNow } from '../../helpers/dateTimeHelper';
 
 

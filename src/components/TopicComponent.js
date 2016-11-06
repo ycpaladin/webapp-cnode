@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { fromNow } from '../helpers/dateTimeHelper';
 import { getTabs, getTabName } from '../helpers/tabHelper';
 import { UserPictureComponent} from './common/CommComponents';
-
+import { getHistory } from '../configureStore';
 class TopicComponent extends Component {
     constructor(props) {
         super(props);
