@@ -10,12 +10,13 @@ import Routers from './routes'
 
 const loggerMiddleware = createLogger();
 
+
 const buildStore = applyMiddleware(
     loggerMiddleware,
     thunkMiddleware
-)(createStore);
+)( createStore );
 
-const store = buildStore(rootReducer, {});
+const store = buildStore( rootReducer, {});
 
 export function configureStore() {
     return store;
@@ -23,6 +24,6 @@ export function configureStore() {
 
 export function getHistory() {
     //保持历史同步
-    const history = syncHistoryWithStore(browserHistory, store)
+    const history = syncHistoryWithStore( browserHistory, store )
     return history;
 }
