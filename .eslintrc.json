@@ -1,0 +1,34 @@
+{
+    "extends": "airbnb-base",
+    "parser": "babel-eslint",
+    "plugins": [
+        "react"
+    ],
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "createClass": "createClass", // Regex for Component Factory to use, default to "createClass"
+            "pragma": "React", // Pragma to use, default to "React"
+            "version": "15.0" // React version, default to the latest React stable release
+        }
+    },
+    "env": {
+        "node": true,
+        "jasmine": true
+    },
+    "rules": {
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error"
+    },
+    "globals": {
+        "window": true,
+        "document": true
+    }
+}
