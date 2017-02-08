@@ -6,8 +6,6 @@ import fromNow from '../../helpers/dateTimeHelper';
  * 公共的脚部分
  */
 export class FooterComponent extends Component {
-
-
   constructor(props) {
     super(props);
     this.render = () => (
@@ -29,20 +27,13 @@ export class FooterComponent extends Component {
  */
 export class ReplyTimeComponent extends Component {
 
-  constructor(props) {
-    super(props);
-    this.getReplyDateAsString = () => {
-      const { replyTime } = this.props;
-      return fromNow(replyTime);
-    };
-  }
-
   shouldComponentUpdate(nextProps) {
     return nextProps.replyTime !== this.props.replyTime;
   }
 
   render() {
-    return (<span className="time">{this.getReplyDateAsString()}</span>);
+    const { replyTime } = this.props;
+    return (<span className="time">{fromNow(replyTime)}</span>);
   }
 }
 
