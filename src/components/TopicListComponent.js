@@ -107,7 +107,7 @@ export class TopicListHeaderComponent extends Component {
 
         let tabs = getTabs();
         let children = tabs.map(({ key, name}, index) => {
-            return (<li key={index} className={this.props.tab == key ? 'currentTab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{name}</a></li>);
+            return (<li key={index} className={this.props.tab == key ? 'current-tab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{name}</a></li>);
         })
         return (
             <header data-flex="dir:left; " data-flex-box="0">

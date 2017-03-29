@@ -70,7 +70,7 @@ export class UserPictureComponent extends Component {
     render() {
         let {avatar_url, loginname} = this.props.user;
         return (
-            <a href="javascript:;" className="userLink">
+            <a href="javascript:;" className="user-link">
                 <div style={{ backgroundImage: `url(${avatar_url})` }} ></div>
             </a>
         );
