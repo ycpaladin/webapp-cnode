@@ -15,7 +15,10 @@
     "redux-router": "^2.1.2",
     "redux-thunk": "^2.1.0",
     "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "webpack": "^1.13.1",
+    "html-webpack-plugin": "^2.22.0",
+    "extract-text-webpack-plugin": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -35,24 +38,19 @@
     "eslint-loader": "^1.6.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.9.0",
-    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "flex.css": "^1.1.4",
-    "html-webpack-plugin": "^2.22.0",
-    "jquery": "^3.1.0",
     "node-sass": "^3.10.1",
     "onfire.js": "^1.0.6",
     "path": "^0.12.7",
-
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
     "start": "webpack-dev-server --inline --content-base --history-api-fallback ",
-    "build": "webpack",
+    "build": "webpack --progress --profile --colors --config webpack.product.config",
     "lint": "eslint **/*.js",
     "lint-html": "eslint **/*.js -f html -o ./reports/lint-results.html",
     "lint-fix": "eslint --fix **/*.js"
