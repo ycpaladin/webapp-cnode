@@ -1,34 +1,23 @@
 {
-    "extends": "airbnb-base",
+    "extends": "airbnb",
     "parser": "babel-eslint",
     "plugins": [
-        "react"
+        "react",
+        "jsx-a11y",
+        "import"
     ],
-    "ecmaFeatures": {
-        "jsx": true
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "settings": {
-        "react": {
-            "createClass": "createClass", // Regex for Component Factory to use, default to "createClass"
-            "pragma": "React", // Pragma to use, default to "React"
-            "version": "15.0" // React version, default to the latest React stable release
-        }
-    },
-    "env": {
-        "node": true,
-        "jasmine": true
+    "globals": {
+        "document":true,
+        "window":true,
+        "console":true
     },
     "rules": {
-        "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"
-    },
-    "globals": {
-        "window": true,
-        "document": true
+        "react/prop-types":0,
+        "react/sort-comp":0,
+        "react/no-multi-comp":0,
+        "no-script-url":0,
+        "react/no-array-index-key":0,
+        "react/jsx-filename-extension":0,
+        "react/prefer-stateless-function":0
     }
 }

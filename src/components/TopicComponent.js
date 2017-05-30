@@ -2,67 +2,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTopicById, goBackTopicList } from '../actions/topicActions';
-<<<<<<< HEAD
-import { Link } from 'react-router';
-import { fromNow } from '../helpers/dateTimeHelper';
-import { getTabs, getTabName } from '../helpers/tabHelper';
-import { UserPictureComponent } from './common/CommComponents';
-import { getHistory } from '../configureStore';
-class TopicComponent extends Component {
-    constructor(props) {
-        super(props);
-=======
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
-
+// import { Link } from 'react-router';
 import fromNow from '../helpers/dateTimeHelper';
 import { getTabName } from '../helpers/tabHelper';
 import { UserPictureComponent } from './common/CommComponents';
 import { getHistory } from '../configureStore';
 
-<<<<<<< HEAD
-    }
-
-    componentWillMount() {
-        let { dispatch, routeParams: { id } } = this.props;
-
-        dispatch(getTopicById(id));
-    }
-
-    render() {
-        let { routeParams: { tab }, isFetching, topic } = this.props;
-        let children;
-        if (isFetching) {
-            children = (<div className="fetching"></div>);
-        } else if (topic !== null) {
-            let { title, author, create_at, visit_count, content, replies } = topic;
-            children = (<div className="topic-content">
-                <div className="header">
-                    <h1>{title}</h1>
-                    <UserPictureComponent user={author} />
-                    <a href="javascript:;" className="user-link">{author.loginname}</a>
-                    <span className="createAt">发布于{fromNow(create_at)}，</span>
-                    <span className="visitCount">{visit_count}次浏览</span>
-                    <i className="icon iconfont">&#xe6a0; </i>
-                </div>
-                <div className="content" dangerouslySetInnerHTML={{ __html: content }}></div>
-
-                <ReplyListComponent replies={replies} />
-
-            </div>);
-        }
-        return (<div data-flex="dir:top main:justify">
-            <TopicHeaderComponent tab={tab} {...this.props} />
-            <div data-flex-box="1" className="content-warpper" >
-                {children}
-            </div>
-        </div>);
-=======
 class TopicComponent extends Component {
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
 
   componentWillMount() {
     const { dispatch, routeParams: { id } } = this.props;
-
     dispatch(getTopicById(id));
   }
 
@@ -70,19 +19,19 @@ class TopicComponent extends Component {
     const { routeParams: { tab }, isFetching, topic } = this.props;
     let children;
     if (isFetching) {
-      children = (<div className="fetching"></div>);
+      children = (<div className="fetching" />);
     } else if (topic !== null) {
       const { title, author, create_at, visit_count: visitCount, content, replies } = topic;
       children = (<div className="topicContent">
         <div className="header">
           <h1>{title}</h1>
           <UserPictureComponent user={author} />
-          <a href="#" className="user-link">{author.loginname}</a>
+          <a href="" className="user-link">{author.loginname}</a>
           <span className="createAt">发布于{fromNow(create_at)}，</span>
           <span className="visitCount">{visitCount}次浏览</span>
           <i className="icon iconfont">&#xe6a0; </i>
         </div>
-        <div className="content" dangerouslySetInnerHTML={{ __html: content }}></div>
+        <div className="content" dangerouslySetInnerHTML={{ __html: content }} />
 
         <ReplyListComponent replies={replies} />
 
@@ -90,7 +39,7 @@ class TopicComponent extends Component {
     }
     return (<div data-flex="dir:top main:justify">
       <TopicHeaderComponent tab={tab} {...this.props} />
-      <div data-flex-box="1" className="contentWarpper" >
+      <div data-flex-box="1" className="content-warpper" >
         {children}
       </div>
     </div>);
@@ -105,33 +54,6 @@ export default connect(r => r.topicReducer)(TopicComponent);
  */
 export class TopicHeaderComponent extends Component {
 
-<<<<<<< HEAD
-    constructor(props) {
-        super(props);
-        this.goBacktoTopicList = e => {
-            let { dispatch } = this.props;
-            dispatch(goBackTopicList());
-            let history = getHistory();
-            history.goBack();
-        }
-    }
-
-
-    render() {
-        let { tab } = this.props;
-        let tabName = getTabName(tab);
-
-        return (
-            <header data-flex="dir:left; " data-flex-box="0" className="topic-header">
-
-                <a href="javascript:;" onClick={e => this.goBacktoTopicList(e)} className="back-btn">
-                    <i className="icon iconfont">&#xe697; </i>
-                    <span> {tabName}</span>
-                </a>
-            </header>
-        );
-    }
-=======
   constructor(props) {
     super(props);
     this.goBacktoTopicList = () => {
@@ -149,44 +71,17 @@ export class TopicHeaderComponent extends Component {
 
     return (
       <header data-flex="dir:left; " data-flex-box="0" className="topicHeader">
-        <a href="#" onClick={e => this.goBacktoTopicList(e)} className="backBtn">
+        <a href="" onClick={e => this.goBacktoTopicList(e)} className="backBtn">
           <i className="icon iconfont">&#xe697; </i>
           <span> {tabName}</span>
         </a>
       </header>
     );
   }
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
 }
 
 
 export class ReplyListComponent extends Component {
-
-<<<<<<< HEAD
-    constructor(props) {
-        super(props);
-
-
-    }
-
-    render() {
-        let { replies } = this.props;
-
-        let children = replies.map((item, index) => {
-
-            return (<ReplyItemComponent key={index} index={index + 1} {...item} />);
-        })
-        return (
-            <div className="reply-list">
-                <div>{replies.length}个回复</div>
-                <ul className="reply-list">
-
-                    {children}
-                </ul>
-            </div>
-        );
-    }
-=======
   render() {
     const { replies } = this.props;
     const children = replies.map((item, index) =>
@@ -201,39 +96,10 @@ export class ReplyListComponent extends Component {
       </div>
     );
   }
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
 }
 
 
 export class ReplyItemComponent extends Component {
-
-<<<<<<< HEAD
-    render() {
-        let { author, create_at, content, index } = this.props;
-        return (
-            <li>
-
-                <UserPictureComponent user={author} />
-
-                <div className="info-header">
-                    <span className="layer-number">{index}楼</span>
-                    <a href="javascript:;" className="user-link">{author.loginname}</a>
-                    <a href="javascript:;" className="good">
-                        <i className="icon iconfont">&#xe717;</i>
-                    </a>
-                </div>
-                <div className="reply-date">
-                    发布于{fromNow(create_at)}
-                </div>
-                <div className="info-content" dangerouslySetInnerHTML={{ __html: content }}>
-
-                </div>
-            </li>
-        );
-
-    }
-}
-=======
   render() {
     const { author, create_at, content, index } = this.props;
     return (
@@ -243,19 +109,16 @@ export class ReplyItemComponent extends Component {
 
         <div className="info-header">
           <span className="layer-number">{index}楼</span>
-          <a href="#" className="user-link">{author.loginname}</a>
-          <a href="#" className="good">
+          <a href="" className="user-link">{author.loginname}</a>
+          <a href="" className="good">
             <i className="icon iconfont">&#xe717;</i>
           </a>
         </div>
         <div className="reply-date">
           发布于{fromNow(create_at)}
         </div>
-        <div className="info-content" dangerouslySetInnerHTML={{ __html: content }}>
-
-        </div>
+        <div className="info-content" dangerouslySetInnerHTML={{ __html: content }} />
       </li>
     );
   }
 }
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152

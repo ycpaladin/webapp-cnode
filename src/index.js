@@ -11,8 +11,8 @@ const store = configureStore();
 const history = getHistory();
 
 render(
-    <Provider store={store}>
-        <Routers history={history} />
-    </Provider>,
+  <Provider store={store}>
+    <Routers history={history} />
+  </Provider>,
     document.querySelector('#container'),
 );

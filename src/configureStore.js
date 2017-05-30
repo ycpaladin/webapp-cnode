@@ -1,13 +1,14 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-// import createLogger from 'redux-logger';
+import createLogger from 'redux-logger';
 import { browserHistory } from 'react-router'; // 路由
 import { syncHistoryWithStore } from 'react-router-redux'; // 路由使用redux管理
 import rootReducer from './reducers/index';
 
-// const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger();
 const buildStore = applyMiddleware(
-  thunkMiddleware,
+    loggerMiddleware,
+    thunkMiddleware,
 )(createStore);
 
 const store = buildStore(rootReducer, {});

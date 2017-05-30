@@ -11,10 +11,10 @@ export class FooterComponent extends Component {
     this.render = () => (
       <footer data-flex-box="0">
         <ul data-flex="dir:left; box:mean">
-          <li><a href="#">文章</a></li>
-          <li><a href="#">文章</a></li>
-          <li><a href="#">文章</a></li>
-          <li><a href="#">文章</a></li>
+          <li><a href="">文章</a></li>
+          <li><a href="">文章</a></li>
+          <li><a href="">文章</a></li>
+          <li><a href="">文章</a></li>
         </ul>
       </footer>
     );
@@ -42,20 +42,6 @@ export class ReplyTimeComponent extends Component {
  */
 export class UserPictureComponent extends Component {
 
-<<<<<<< HEAD
-    shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.avatar_url !== this.props.avatar_url;
-    }
-
-    render() {
-        let {avatar_url, loginname} = this.props.user;
-        return (
-            <a href="javascript:;" className="user-link">
-                <div style={{ backgroundImage: `url(${avatar_url})` }} ></div>
-            </a>
-        );
-    }
-=======
   shouldComponentUpdate(nextProps) {
     return nextProps.avatar_url !== this.props.avatar_url;
   }
@@ -63,12 +49,11 @@ export class UserPictureComponent extends Component {
   render() {
     const { avatar_url: avatarUrl } = this.props.user;
     return (
-      <a href="#" className="userLink">
-        <div style={{ backgroundImage: `url(${avatarUrl})` }} ></div>
+      <a href="" className="user-link">
+        <div style={{ backgroundImage: `url(${avatarUrl})` }} />
       </a>
     );
   }
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
 }
 
 /**
@@ -78,7 +63,7 @@ export class LoadingComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.render = () => (<div className="fetching"></div>);
+    this.render = () => (<div className="fetching" />);
   }
 
 }

@@ -9,12 +9,12 @@ export default class Routers extends Component {
   constructor(props) {
     super(props);
 
-    this.topicListOnEnter = (e) => {
-      console.log('===================>', e);
+    this.topicListOnEnter = () => {
+      // console.log('===================>', e);
     };
 
     this.topicListOnLeave = () => {
-      window.localStorage.topicListScrollHeight = document.getElementsByClassName('contentWarpper')[0].scrollTop;
+      window.localStorage.topicListScrollHeight = document.getElementsByClassName('content-warpper')[0].scrollTop;
     };
   }
 
@@ -22,10 +22,12 @@ export default class Routers extends Component {
     return (
       <Router history={this.props.history}>
         <Route path="/" component={Layout}>
-          <IndexRoute component={TopicListComponent}
+          <IndexRoute
+            component={TopicListComponent}
             onLeave={this.topicListOnLeave}
-            onEnter={e => this.topicListOnEnter(e)} />
-          <Route path='topic/:tab/:id' component={TopicComponent} />
+            onEnter={e => this.topicListOnEnter(e)}
+          />
+          <Route path="topic/:tab/:id" component={TopicComponent} />
         </Route>
       </Router>
     );

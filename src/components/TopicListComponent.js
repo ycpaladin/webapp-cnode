@@ -37,7 +37,7 @@ class TopicListComponent extends Component {
   render() {
     let children;
     if (this.props.isFetching && this.props.page === 1) {
-      children = (<div className="fetching"></div>);
+      children = (<div className="fetching" />);
     } else {
       const items = this.props.list.map((item, index) =>
         <TopicItemComponent key={index} {...item} currentTab={this.props.tab} />);
@@ -53,7 +53,7 @@ class TopicListComponent extends Component {
     return (
       <div data-flex="dir:top main:justify" data-flex-box="1">
         <TopicListHeaderComponent {...this.props} />
-        <div data-flex-box="1" className="contentWarpper" onScroll={e => this.handScroll(e)}>
+        <div data-flex-box="1" className="content-warpper" onScroll={e => this.handScroll(e)}>
           {children}
         </div>
         <FooterComponent />
@@ -68,7 +68,7 @@ class TopicListComponent extends Component {
   componentDidMount() {
     const { shouldFetch } = this.props;
     if (!shouldFetch) {
-      document.getElementsByClassName('contentWarpper')[0].scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
+      document.getElementsByClassName('content-warpper')[0].scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
     }
   }
 }
@@ -82,64 +82,27 @@ export default connect(root => root.topicListReducer)(TopicListComponent);
  */
 export class TopicListHeaderComponent extends Component {
 
-<<<<<<< HEAD
-    constructor(props) {
-        super(props);
-        this.handClick = (tab) => {
-            if (tab !== this.props.tab) {
-                let {dispatch} = this.props;
-                dispatch(getTopics(1, tab));
-                // document.getElementsByTagName('body')[0].scrollTop = 0; //
-            }
-        }
-    }
-
-    /**
-     * 判断组件是否需要重新加载，以提升性能
-     */
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.props.tab !== nextProps.tab;//防止重复render
-    }
-
-    render() {
-
-        let tabs = getTabs();
-        let children = tabs.map(({ key, name}, index) => {
-            return (<li key={index} className={this.props.tab == key ? 'current-tab' : ''}><a href="javascript:;" onClick={e => this.handClick(key) } >{name}</a></li>);
-        })
-        return (
-            <header data-flex="dir:left; " data-flex-box="0">
-                <ul data-flex="dir:left box:mean">
-                    {children}
-                </ul>
-
-            </header>
-        );
-    }
-=======
   constructor(props) {
     super(props);
     this.handClick = (tab) => {
       if (tab !== this.props.tab) {
         const { dispatch } = this.props;
         dispatch(getTopics(1, tab));
-        // document.getElementsByTagName('body')[0].scrollTop = 0; //
+                // document.getElementsByTagName('body')[0].scrollTop = 0; //
       }
     };
   }
 
-  /**
-   * 判断组件是否需要重新加载，以提升性能
-   */
+    /**
+     * 判断组件是否需要重新加载，以提升性能
+     */
   shouldComponentUpdate(nextProps) {
     return this.props.tab !== nextProps.tab;// 防止重复render
   }
 
   render() {
     const tabs = getTabs();
-    const children = tabs.map(({ key, name }, index) =>
-      (<li key={index} className={this.props.tab === key ? 'currentTab' : ''}>
-        <a href="#" onClick={() => this.handClick(key)} >{name}</a></li>));
+    const children = tabs.map(({ key, name }) => (<li key={key} className={this.props.tab === key ? 'current-tab' : ''}><a href="javascript:;" onClick={() => this.handClick(key)} >{name}</a></li>));
     return (
       <header data-flex="dir:left; " data-flex-box="0">
         <ul data-flex="dir:left box:mean">
@@ -149,7 +112,7 @@ export class TopicListHeaderComponent extends Component {
       </header>
     );
   }
->>>>>>> a8c995faf5b8cc60af9bf4fe359bef3557c71152
+
 }
 
 
