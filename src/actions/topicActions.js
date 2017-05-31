@@ -6,7 +6,7 @@ const apiUrlBase = 'https://cnodejs.org/api/v1';
 
 const {
   GET_TOPIC_LISTS_COMPLETED,
-  GET_TOPIC_LISTS_FIRST_COMPLETED,
+  // GET_TOPIC_LISTS_FIRST_COMPLETED,
   GET_TOPIC_LISTS_FETCHING,
   GO_BACK_TOPIC_LIST,
 
@@ -15,7 +15,7 @@ const {
   SWITCH_TAB,
 } = actionTypes;
 
-export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
+export function getTopics(page = 1, tab = 'all', scrollTop = 0, limit = 15, mdrender = true) {
   return (dispatch) => {
     dispatch({
       type: GET_TOPIC_LISTS_FETCHING,
@@ -25,18 +25,11 @@ export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
     });
     const apiUrl = `${apiUrlBase}/topics?page=${page}&tab=${tab}&limit=${limit}&mdrender=${mdrender}`;
     fetch(apiUrl).then(response => response.json()).then(({ data }) => {
-      const result = { page, limit, tab, data };
-      if (page === 1) {
-        dispatch({
-          type: GET_TOPIC_LISTS_FIRST_COMPLETED,
-          result,
-        });
-      } else {
-        dispatch({
-          type: GET_TOPIC_LISTS_COMPLETED,
-          result,
-        });
-      }
+      const result = { page, limit, tab, scrollTop, data };
+      dispatch({
+        type: GET_TOPIC_LISTS_COMPLETED,
+        result,
+      });
     });
   };
 }
@@ -64,11 +57,12 @@ export function getTopicById(topicId) {
 }
 
 
-export function switchTab(tab) {
+export function switchTab(tab, scrollTop) {
   return {
     type: SWITCH_TAB,
     result: {
       tab,
+      scrollTop,
     },
   };
 }

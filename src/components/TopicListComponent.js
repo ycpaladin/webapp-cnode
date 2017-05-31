@@ -18,7 +18,7 @@ class TopicListComponent extends Component {
     // 监听滚动条是否已经到达底部
     this.handScroll = ({ target: { scrollHeight, scrollTop, clientHeight } }) => {
       // 如果到达底部则执行加载下一页的操作
-      const { dispatch, page, tab } = self.props;
+      const { dispatch, tab, [tab]: { page } } = self.props;
       if (scrollTop + clientHeight >= scrollHeight) {
         dispatch(getTopics(page + 1, tab));
       }
@@ -39,13 +39,7 @@ class TopicListComponent extends Component {
     dispatch(getTopics(1));
   }
 
-//   shouldComponentUpdate(nextProps) {
-//     console.log(nextProps);
-//     return true;
-//   }
-
   componentWillUpdate({ dispatch, isFetching, tab, [tab]: { list, page } }) {
-    // const { dispatch, isFetching, tab, [tab]: { list, page } } = this.props;
     if (page === 1 && list.size === 0 && isFetching === false) {
       dispatch(getTopics(1, tab));
     }
@@ -98,6 +92,11 @@ class TopicListComponent extends Component {
       document.getElementsByClassName('content-warpper')[0].scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
     }
   }
+
+  componentDidUpdate() {
+    const { tab, [tab]: { scrollTop } } = this.props;
+    document.getElementsByClassName('content-warpper')[0].scrollTop = scrollTop;
+  }
 }
 
 
@@ -114,7 +113,7 @@ export class TopicListHeaderComponent extends Component {
     this.handClick = (tab) => {
       if (tab !== this.props.tab) {
         const { dispatch } = this.props;
-        dispatch(switchTab(tab));
+        dispatch(switchTab(tab, document.getElementsByClassName('content-warpper')[0].scrollTop));
         // dispatch(getTopics(1, tab));
                 // document.getElementsByTagName('body')[0].scrollTop = 0; //
       }
