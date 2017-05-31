@@ -22,7 +22,7 @@ class TopicComponent extends Component {
       children = (<div className="fetching" />);
     } else if (topic !== null) {
       const { title, author, create_at, visit_count: visitCount, content, replies } = topic;
-      children = (<div className="topicContent">
+      children = (<div className="topic-content">
         <div className="header">
           <h1>{title}</h1>
           <UserPictureComponent user={author} />
@@ -70,7 +70,7 @@ export class TopicHeaderComponent extends Component {
     const tabName = getTabName(tab);
 
     return (
-      <header data-flex="dir:left; " data-flex-box="0" className="topicHeader">
+      <header data-flex="dir:left; " data-flex-box="0" className="topic-header">
         <a href="" onClick={e => this.goBacktoTopicList(e)} className="backBtn">
           <i className="icon iconfont">&#xe697; </i>
           <span> {tabName}</span>
@@ -87,7 +87,7 @@ export class ReplyListComponent extends Component {
     const children = replies.map((item, index) =>
       (<ReplyItemComponent key={index} index={index + 1} {...item} />));
     return (
-      <div className="replyList">
+      <div className="reply-list">
         <div>{replies.length}个回复</div>
         <ul className="reply-list">
 

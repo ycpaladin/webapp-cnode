@@ -7,6 +7,7 @@ const actionTypes = keyMirror({
   GO_BACK_TOPIC_LIST: null,
   GET_TOPIC_BYID_FETCHING: null, // 正在根据ID加载，（网络请求）
   GET_TOPIC_BYID_COMPLETED: null, // 根据ID加载topic完毕
+  SWITCH_TAB: null,
 });
 
 export default actionTypes;

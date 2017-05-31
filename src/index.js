@@ -14,5 +14,4 @@ render(
   <Provider store={store}>
     <Routers history={history} />
   </Provider>,
-    document.querySelector('#container'),
-);
+  document.querySelector('#container'));

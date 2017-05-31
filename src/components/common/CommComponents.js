@@ -65,6 +65,5 @@ export class LoadingComponent extends Component {
     super(props);
     this.render = () => (<div className="fetching" />);
   }
-
 }
 

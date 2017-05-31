@@ -12,6 +12,7 @@ const {
 
   GET_TOPIC_BYID_FETCHING,
   GET_TOPIC_BYID_COMPLETED,
+  SWITCH_TAB,
 } = actionTypes;
 
 export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
@@ -26,12 +27,10 @@ export function getTopics(page = 1, tab = 'all', limit = 15, mdrender = true) {
     fetch(apiUrl).then(response => response.json()).then(({ data }) => {
       const result = { page, limit, tab, data };
       if (page === 1) {
-        // setTimeout(() => {
         dispatch({
           type: GET_TOPIC_LISTS_FIRST_COMPLETED,
           result,
         });
-        // }, 50000);
       } else {
         dispatch({
           type: GET_TOPIC_LISTS_COMPLETED,
@@ -61,5 +60,15 @@ export function getTopicById(topicId) {
         result: data,
       });
     });
+  };
+}
+
+
+export function switchTab(tab) {
+  return {
+    type: SWITCH_TAB,
+    result: {
+      tab,
+    },
   };
 }

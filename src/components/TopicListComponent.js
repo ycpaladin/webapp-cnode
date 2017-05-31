@@ -1,10 +1,12 @@
 
 import React, { Component } from 'react';
+import ReactPullToRefresh from 'react-pull-to-refresh';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { FooterComponent, ReplyTimeComponent, UserPictureComponent } from './common/CommComponents';
-import { getTopics } from '../actions/topicActions';
+import { getTopics, switchTab } from '../actions/topicActions';
 import { getTabs } from '../helpers/tabHelper';
+
 /**
  * 文章列表
  */
@@ -12,13 +14,19 @@ class TopicListComponent extends Component {
 
   constructor(props) {
     super(props);
+    const self = this;
     // 监听滚动条是否已经到达底部
     this.handScroll = ({ target: { scrollHeight, scrollTop, clientHeight } }) => {
       // 如果到达底部则执行加载下一页的操作
+      const { dispatch, page, tab } = self.props;
       if (scrollTop + clientHeight >= scrollHeight) {
-        const { dispatch, page, tab } = this.props;
         dispatch(getTopics(page + 1, tab));
       }
+    };
+    this.handleRefresh = (resolve) => { // , reject
+      const { dispatch, tab } = self.props;
+      dispatch(getTopics(1, tab));
+      resolve();
     };
   }
 
@@ -27,20 +35,31 @@ class TopicListComponent extends Component {
    * 如果是从文章详情页中返回的则不需要重新请求，直接生成即可
    */
   componentWillMount() {
-    const { dispatch, shouldFetch } = this.props;
-    if (shouldFetch) {
-      dispatch(getTopics(1));
+    const { dispatch } = this.props;
+    dispatch(getTopics(1));
+  }
+
+//   shouldComponentUpdate(nextProps) {
+//     console.log(nextProps);
+//     return true;
+//   }
+
+  componentWillUpdate({ dispatch, isFetching, tab, [tab]: { list, page } }) {
+    // const { dispatch, isFetching, tab, [tab]: { list, page } } = this.props;
+    if (page === 1 && list.size === 0 && isFetching === false) {
+      dispatch(getTopics(1, tab));
     }
   }
 
 
   render() {
     let children;
-    if (this.props.isFetching && this.props.page === 1) {
+    const { tab, isFetching, [tab]: { list, page } } = this.props;
+    if (isFetching && page === 1) {
       children = (<div className="fetching" />);
     } else {
-      const items = this.props.list.map((item, index) =>
-        <TopicItemComponent key={index} {...item} currentTab={this.props.tab} />);
+      const items = list.map((item, index) =>
+        <TopicItemComponent key={index} {...item} currentTab={tab} />);
 
       children = (
         <ul data-flex="dir:top main:justify" className="topic-list">
@@ -54,12 +73,20 @@ class TopicListComponent extends Component {
       <div data-flex="dir:top main:justify" data-flex-box="1">
         <TopicListHeaderComponent {...this.props} />
         <div data-flex-box="1" className="content-warpper" onScroll={e => this.handScroll(e)}>
-          {children}
+          <ReactPullToRefresh
+            onRefresh={this.handleRefresh}
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            {children}
+          </ReactPullToRefresh>
         </div>
         <FooterComponent />
       </div>
     );
   }
+
 
   /**
    * 组件已经挂载完毕，此时可以进行DOM操作
@@ -87,7 +114,8 @@ export class TopicListHeaderComponent extends Component {
     this.handClick = (tab) => {
       if (tab !== this.props.tab) {
         const { dispatch } = this.props;
-        dispatch(getTopics(1, tab));
+        dispatch(switchTab(tab));
+        // dispatch(getTopics(1, tab));
                 // document.getElementsByTagName('body')[0].scrollTop = 0; //
       }
     };
