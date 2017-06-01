@@ -63,19 +63,25 @@ export class UserPictureComponent extends Component {
     );
   }
 
+
   componentDidMount() {
     const { avatar_url: avatarUrl } = this.props.user;
     const self = this;
-    function showUserIcon() {
+    this.showUserIcon = (e) => {
+      const { scrollTop, offsetHeight } = e.target;
       const { offsetTop } = self.userIcon;
-      if (offsetTop >= this.scrollTop && offsetTop < (this.scrollTop + this.offsetHeight)) {
+      if (offsetTop >= scrollTop && offsetTop < (scrollTop + offsetHeight)) {
         self.userIcon.style.backgroundImage = `url(${avatarUrl})`;
-        self.scrollElement.removeEventListener('scroll', showUserIcon, true);
+        self.scrollElement.removeEventListener('scroll', self.showUserIcon, true);
       }
-    }
+    };
     if (self.userIcon !== undefined) {
-      self.scrollElement.addEventListener('scroll', showUserIcon, true);
+      self.scrollElement.addEventListener('scroll', this.showUserIcon, true);
     }
+  }
+
+  componentWillUnmount() {
+    this.scrollElement.removeEventListener('scroll', this.showUserIcon, true);
   }
 
 }
