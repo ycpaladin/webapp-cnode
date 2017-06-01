@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import ReactPullToRefresh from 'react-pull-to-refresh';
+// import ReactPullToRefresh from 'react-pull-to-refresh';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { FooterComponent, ReplyTimeComponent, UserPictureComponent } from './common/CommComponents';
@@ -53,28 +53,29 @@ class TopicListComponent extends Component {
       children = (<div className="fetching" />);
     } else {
       const items = list.map((item, index) =>
-        <TopicItemComponent key={index} {...item} currentTab={tab} />);
-
+        <TopicItemComponent key={index} {...item} currentTab={tab} page={page} />);
       children = (
         <ul data-flex="dir:top main:justify" className="topic-list">
           {items}
         </ul>
       );
     }
-
+          /* <ReactPullToRefresh
+            onRefresh={this.handleRefresh}
+            className="pull-to-refresh"
+            icon={<div className="fetching" />}
+            style={{
+              textAlign: 'center',
+            }}
+          >*/
 
     return (
       <div data-flex="dir:top main:justify" data-flex-box="1">
         <TopicListHeaderComponent {...this.props} />
-        <div data-flex-box="1" className="content-warpper" onScroll={e => this.handScroll(e)}>
-          <ReactPullToRefresh
-            onRefresh={this.handleRefresh}
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            {children}
-          </ReactPullToRefresh>
+        <div data-flex-box="1" id="contantWarpper" className="content-warpper" onScroll={e => this.handScroll(e)}>
+
+          {children}
+
         </div>
         <FooterComponent />
       </div>
@@ -89,13 +90,15 @@ class TopicListComponent extends Component {
   componentDidMount() {
     const { shouldFetch } = this.props;
     if (!shouldFetch) {
-      document.getElementsByClassName('content-warpper')[0].scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
+      document.getElementById('contantWarpper').scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate({ tab: prevTab }) {
     const { tab, [tab]: { scrollTop } } = this.props;
-    document.getElementsByClassName('content-warpper')[0].scrollTop = scrollTop;
+    if (prevTab !== tab) {
+      document.getElementById('contantWarpper').scrollTop = scrollTop;
+    }
   }
 }
 
@@ -170,7 +173,7 @@ export class TopicItemComponent extends Component {
   }
 
   render() {
-    const { id, top, tab, good, title, currentTab,
+    const { id, top, tab, good, title, currentTab, page,
       visit_count: visitCount, reply_count: replyCount,
       last_reply_at: lastReplyAt, author } = this.props;
     let tabElement;
@@ -179,7 +182,7 @@ export class TopicItemComponent extends Component {
     }
     return (
       <li>
-        <UserPictureComponent user={author} />
+        <UserPictureComponent user={author} page={page} />
         {tabElement}
         <Link title={title} to={`/topic/${tab}/${id}`}> {title}</Link>
         <span className="count">

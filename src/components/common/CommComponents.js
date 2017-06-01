@@ -42,18 +42,42 @@ export class ReplyTimeComponent extends Component {
  */
 export class UserPictureComponent extends Component {
 
+  constructor(props) {
+    super(props);
+    this.scrollElement = document.getElementById('contantWarpper');
+  }
+
   shouldComponentUpdate(nextProps) {
     return nextProps.avatar_url !== this.props.avatar_url;
   }
 
   render() {
-    const { avatar_url: avatarUrl } = this.props.user;
+    const { user: { avatar_url: avatarUrl }, page } = this.props;
+    const headIcon = page === 1 ?
+      <div style={{ backgroundImage: `url(${avatarUrl})` }} /> :
+      <div ref={(c) => { this.userIcon = c; }} />;
     return (
       <a href="" className="user-link">
-        <div style={{ backgroundImage: `url(${avatarUrl})` }} />
+        {headIcon}
       </a>
     );
   }
+
+  componentDidMount() {
+    const { avatar_url: avatarUrl } = this.props.user;
+    const self = this;
+    function showUserIcon() {
+      const { offsetTop } = self.userIcon;
+      if (offsetTop >= this.scrollTop && offsetTop < (this.scrollTop + this.offsetHeight)) {
+        self.userIcon.style.backgroundImage = `url(${avatarUrl})`;
+        self.scrollElement.removeEventListener('scroll', showUserIcon, true);
+      }
+    }
+    if (self.userIcon !== undefined) {
+      self.scrollElement.addEventListener('scroll', showUserIcon, true);
+    }
+  }
+
 }
 
 /**

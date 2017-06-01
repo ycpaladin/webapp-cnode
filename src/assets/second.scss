@@ -306,3 +306,15 @@ a.user-link {
         transform: rotate(360deg)
     }
 }
+
+
+.pull-to-refresh{
+    .ptr-element{
+        display: none;
+    }
+}
+.ptr-refresh{
+    .ptr-element{
+        display: block;
+    }
+}
