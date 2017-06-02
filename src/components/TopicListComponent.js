@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import FooterComponent from './common/FooterComponent';
 import TopicItemComponent from './TopicItemComponent';
 import TopicListHeaderComponent from './TopicListHeaderComponent';
+import PullToRefreshComponent from './common/PullToRefreshComponent';
 import { getTopics } from '../actions/topicActions';
 
 /**
@@ -71,12 +72,12 @@ class TopicListComponent extends Component {
     return (
       <div data-flex="dir:top main:justify" data-flex-box="1">
         <TopicListHeaderComponent {...this.props} />
+
         <div data-flex-box="1" id="contentWarpper" className="content-warpper" onScroll={e => this.handScroll(e)}>
-          {children}
-
+          <PullToRefreshComponent loading={<div className="fetching" />}>
+            {children}
+          </PullToRefreshComponent>
         </div>
-
-
         <FooterComponent />
       </div>
     );
