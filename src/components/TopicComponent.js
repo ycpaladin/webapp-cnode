@@ -5,7 +5,7 @@ import { getTopicById, goBackTopicList } from '../actions/topicActions';
 // import { Link } from 'react-router';
 import fromNow from '../helpers/dateTimeHelper';
 import { getTabName } from '../helpers/tabHelper';
-import { UserPictureComponent } from './common/CommComponents';
+import UserPictureComponent from './common/UserPictureComponent';
 import { getHistory } from '../configureStore';
 
 class TopicComponent extends Component {

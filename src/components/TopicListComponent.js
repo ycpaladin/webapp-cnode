@@ -1,11 +1,10 @@
 
 import React, { Component } from 'react';
-// import ReactPullToRefresh from 'react-pull-to-refresh';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { FooterComponent, ReplyTimeComponent, UserPictureComponent } from './common/CommComponents';
-import { getTopics, switchTab } from '../actions/topicActions';
-import { getTabs } from '../helpers/tabHelper';
+import FooterComponent from './common/FooterComponent';
+import TopicItemComponent from './TopicItemComponent';
+import TopicListHeaderComponent from './TopicListHeaderComponent';
+import { getTopics } from '../actions/topicActions';
 
 /**
  * 文章列表
@@ -72,11 +71,12 @@ class TopicListComponent extends Component {
     return (
       <div data-flex="dir:top main:justify" data-flex-box="1">
         <TopicListHeaderComponent {...this.props} />
-        <div data-flex-box="1" id="contantWarpper" className="content-warpper" onScroll={e => this.handScroll(e)}>
-
+        <div data-flex-box="1" id="contentWarpper" className="content-warpper" onScroll={e => this.handScroll(e)}>
           {children}
 
         </div>
+
+
         <FooterComponent />
       </div>
     );
@@ -90,14 +90,14 @@ class TopicListComponent extends Component {
   componentDidMount() {
     const { shouldFetch } = this.props;
     if (!shouldFetch) {
-      document.getElementById('contantWarpper').scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
+      document.getElementById('contentWarpper').scrollTop = parseFloat(window.localStorage.topicListScrollHeight) || 0;
     }
   }
 
   componentDidUpdate({ tab: prevTab }) {
     const { tab, [tab]: { scrollTop } } = this.props;
     if (prevTab !== tab) {
-      document.getElementById('contantWarpper').scrollTop = scrollTop;
+      document.getElementById('contentWarpper').scrollTop = scrollTop;
     }
   }
 }
@@ -105,91 +105,3 @@ class TopicListComponent extends Component {
 
 export default connect(root => root.topicListReducer)(TopicListComponent);
 
-
-/**
- * 文章列表的头部
- */
-export class TopicListHeaderComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    this.handClick = (tab) => {
-      if (tab !== this.props.tab) {
-        const { dispatch } = this.props;
-        dispatch(switchTab(tab, document.getElementsByClassName('content-warpper')[0].scrollTop));
-        // dispatch(getTopics(1, tab));
-                // document.getElementsByTagName('body')[0].scrollTop = 0; //
-      }
-    };
-  }
-
-    /**
-     * 判断组件是否需要重新加载，以提升性能
-     */
-  shouldComponentUpdate(nextProps) {
-    return this.props.tab !== nextProps.tab;// 防止重复render
-  }
-
-  render() {
-    const tabs = getTabs();
-    const children = tabs.map(({ key, name }) => (<li key={key} className={this.props.tab === key ? 'current-tab' : ''}><a href="javascript:;" onClick={() => this.handClick(key)} >{name}</a></li>));
-    return (
-      <header data-flex="dir:left; " data-flex-box="0">
-        <ul data-flex="dir:left box:mean">
-          {children}
-        </ul>
-
-      </header>
-    );
-  }
-
-}
-
-
-/**
- * 文章列表项组件
- */
-export class TopicItemComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    this.getTabName = () => {
-      const { top, good, tab } = this.props;
-      if (top) {
-        return '置顶';
-      } else if (good) {
-        return '精华';
-      }
-
-      switch (tab) {
-        case 'good': return '精华';
-        case 'share': return '分享';
-        case 'ask': return '问答';
-        case 'job': return '招聘';
-        default:
-          return '精华';
-      }
-    };
-  }
-
-  render() {
-    const { id, top, tab, good, title, currentTab, page,
-      visit_count: visitCount, reply_count: replyCount,
-      last_reply_at: lastReplyAt, author } = this.props;
-    let tabElement;
-    if (currentTab === 'all' || top || good) {
-      tabElement = <span className={top || good || tab === currentTab ? 'green' : 'normal'}>{this.getTabName()}</span>;
-    }
-    return (
-      <li>
-        <UserPictureComponent user={author} page={page} />
-        {tabElement}
-        <Link title={title} to={`/topic/${tab}/${id}`}> {title}</Link>
-        <span className="count">
-          <span>{replyCount}</span><span>/</span><span>{visitCount}</span>
-        </span>
-        <ReplyTimeComponent replyTime={lastReplyAt} />
-      </li>
-    );
-  }
-}
