@@ -15,12 +15,12 @@ const {
   SWITCH_TAB,
 } = actionTypes;
 
-export function getTopics(page = 1, tab = 'all', scrollTop = 0, limit = 15, mdrender = true) {
+export function getTopics(page = 1, tab = 'all', scrollTop = 0, showFetching = false, limit = 15, mdrender = true) {
   return (dispatch) => {
     dispatch({
       type: GET_TOPIC_LISTS_FETCHING,
       result: {
-        page, limit, tab,
+        page, limit, tab, showFetching,
       },
     });
     const apiUrl = `${apiUrlBase}/topics?page=${page}&tab=${tab}&limit=${limit}&mdrender=${mdrender}`;

@@ -16,7 +16,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    host: '192.168.10.68',
+    // host: '192.168.10.68',
     hot: true,
     inline: true,
     progress: true,

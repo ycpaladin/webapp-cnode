@@ -23,10 +23,10 @@ class TopicListComponent extends Component {
         dispatch(getTopics(page + 1, tab));
       }
     };
-    this.handleRefresh = (resolve) => { // , reject
+    this.handleRefresh = (resovle) => { // , reject
       const { dispatch, tab } = self.props;
       dispatch(getTopics(1, tab));
-      resolve();
+      resovle();
     };
   }
 
@@ -36,20 +36,20 @@ class TopicListComponent extends Component {
    */
   componentWillMount() {
     const { dispatch } = this.props;
-    dispatch(getTopics(1));
+    dispatch(getTopics(1, 'all', 0, true));
   }
 
   componentWillUpdate({ dispatch, isFetching, tab, [tab]: { list, page } }) {
     if (page === 1 && list.size === 0 && isFetching === false) {
-      dispatch(getTopics(1, tab));
+      dispatch(getTopics(1, tab, 0, true));
     }
   }
 
 
   render() {
     let children;
-    const { tab, isFetching, [tab]: { list, page } } = this.props;
-    if (isFetching && page === 1) {
+    const { tab, isFetching, showFetching, [tab]: { list, page } } = this.props;
+    if (isFetching === true && showFetching === true && page === 1) {
       children = (<div className="fetching" />);
     } else {
       const items = list.map((item, index) =>
@@ -74,7 +74,7 @@ class TopicListComponent extends Component {
         <TopicListHeaderComponent {...this.props} />
 
         <div data-flex-box="1" id="contentWarpper" className="content-warpper" onScroll={e => this.handScroll(e)}>
-          <PullToRefreshComponent loading={<div className="fetching" />}>
+          <PullToRefreshComponent loading={<div className="fetching" />} onRefresh={this.handleRefresh}>
             {children}
           </PullToRefreshComponent>
         </div>
@@ -82,6 +82,10 @@ class TopicListComponent extends Component {
       </div>
     );
   }
+
+//   pullRefresh() {
+//     console.log('yyy=>');
+//   }
 
 
   /**

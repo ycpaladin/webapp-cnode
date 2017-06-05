@@ -18,6 +18,7 @@ const {
 
 const defaultState = {
   isFetching: false,
+  showFetching: true,
   tab: 'all',
   all: {
     page: 1,
@@ -33,14 +34,15 @@ export default function topicListReducer(state = defaultState, action) {
     case GO_BACK_TOPIC_LIST:
       return Object.assign({}, state, {
         isFetching: false,
-        shouldFetch: false,
+        showFetching: false,
       });
     case GET_TOPIC_LISTS_FETCHING:
-      const { tab, page } = result;
+      const { tab, page, showFetching } = result;
       const { list, scrollTop } = state[tab] || { list: List.of(...[]), scrollTop: 0 };
       return Object.assign({}, state, {
         isFetching: true,
         tab,
+        showFetching,
         [tab]: {
           page,
           scrollTop,
@@ -55,7 +57,8 @@ export default function topicListReducer(state = defaultState, action) {
         [tabName]: {
           page: result.page,
           scrollTop: state[tabName].scrollTop,
-          list: state[tabName].list.push(...result.data),
+          list: result.page === 1 ?
+          List.of(...result.data) : state[tabName].list.push(...result.data),
         },
       });
     case SWITCH_TAB:
