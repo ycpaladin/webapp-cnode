@@ -5,7 +5,7 @@ export default class PullToRefreshComponent extends Component {
     super(props);
     this.className = this.props.className || 'pull-to-refresh';
     this.defaultTranslate3dY = this.props.defaultTranslate3dY || -70;
-    this.pulledYLimit = this.props.pulledYLimit || 50;
+    this.pulledYLimit = this.props.pulledYLimit || 0;
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
@@ -47,7 +47,7 @@ export default class PullToRefreshComponent extends Component {
     e.currentTarget.parentElement.scrollTop === 0) { // && this.triggerRefresh === false
       const [{ pageY }] = e.changedTouches; // pageX,
       this.pulledY = pageY - this.touchStart; // 往下拉了多少
-      this.translate3dY = this.defaultTranslate3dY + this.pulledY;
+      this.translate3dY = (this.defaultTranslate3dY + this.pulledY) / 3;
 
       this.element.style.transform = `translate3d(0px,${this.translate3dY}px,0px)`;
       if (this.pulledY >= this.pulledYLimit) {
@@ -63,7 +63,7 @@ export default class PullToRefreshComponent extends Component {
           clearInterval(resetTimer);
           resovle();
         }
-        this.translate3dY -= 2;
+        this.translate3dY -= 1;
         this.element.style.transform = `translate3d(0px,${this.translate3dY}px,0px)`;
       }, 1);
     });
@@ -75,12 +75,14 @@ export default class PullToRefreshComponent extends Component {
     }
     if (this.triggerRefresh) {
       this.reset(this.pulledYLimit).then(() => {
-        if (this.props.onRefresh) {
-          this.props.onRefresh(() => {
-            this.triggerRefresh = false;
-            this.reset(this.defaultTranslate3dY);
-          });
-        }
+        setTimeout(() => {
+          if (this.props.onRefresh) {
+            this.props.onRefresh(() => {
+              this.triggerRefresh = false;
+              this.reset(this.defaultTranslate3dY);
+            });
+          }
+        }, 500);
       });
     } else {
       this.reset(this.defaultTranslate3dY);
